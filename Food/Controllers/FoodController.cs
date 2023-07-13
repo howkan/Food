@@ -1,5 +1,4 @@
-﻿using Food.Context;
-using Food.Model;
+﻿using Food.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +10,17 @@ namespace Food.Controllers
     [ApiController]
     public class FoodController : ControllerBase
     {
-        AplicationContext Db = new AplicationContext();
+        public FoodContext _context;
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Foods>>> Get()
+        public FoodController(FoodContext context)
         {
-            return await Db.Food.ToListAsync();
+            _context = context;
         }
 
-
-
+        [HttpGet(Name ="GetFood")]
+        public async Task<ActionResult<IEnumerable<Foods>>> GetFoods()
+        {
+            return await _context.Foods.ToListAsync(); 
+        }
     }
 }
